@@ -42,6 +42,12 @@ struct NewUserView: View {
             return emailPredicate.evaluate(with: email)
          
         }
+    
+    // Creates a white color font
+        init() {
+                UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+            }
+        
         var body: some View {
             NavigationStack {
                 ZStack(alignment: .top) {
@@ -105,7 +111,7 @@ struct NewUserView: View {
                 
                 
             } // End of ZStack
-            .navigationTitle("Login")
+            .navigationTitle("New User")
             .font(.title)
             
         } // End of Nav Stack

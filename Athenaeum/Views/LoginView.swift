@@ -13,9 +13,8 @@ struct LoginView: View {
     let textFieldColor = Color(#colorLiteral(red: 0.8374180198, green: 0.8374378085, blue: 0.8374271393, alpha: 1))
     let buttonColor = Color(#colorLiteral(red: 0.02285457216, green: 0.01912862621, blue: 0.9728235602, alpha: 0.9074658526))
     
-        let appName: String = "Athenaeum"
-        @State var toggleHomeView: Bool = false
-        @State var toggleCreateUser: Bool = false
+    @State var togglePasswordView: Bool = false
+        
         
     // stuff for TextField, need to clean this up
         @State var input1: String = ""
@@ -81,17 +80,25 @@ struct LoginView: View {
                         
                         Button(action: {
                             //ToDo: if valid inputs, send to next view else alert error
+                            togglePasswordView.toggle()
                         }, label: {
                             Text("Login")
+                                .font(.headline)
+                                .foregroundStyle(Color.white)
+                                .padding()
+                                .frame(width: 200)
+                                .background(Color.blue)
+                                .cornerRadius(25)
+                                .shadow(radius: 10)
+                                .shadow(color: .purple, radius: 5)
                         })
-                        .font(.headline)
-                        .foregroundStyle(Color.white)
-                        .padding()
-                        .frame(width: 200)
-                        .background(Color.blue)
-                    .cornerRadius(25)
-                    .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
-                    .shadow(color: .purple, radius: 5)
+                        // MARK: need to find way of changing view to have it
+                        // - either go back to ContentView via current way
+                        // - or have it switch to GroupView entirely separate...
+                        
+                        .navigationDestination(isPresented: $togglePasswordView, destination: {
+                            GroupView()
+                        })
                     
                 } // End of VStack
                 
