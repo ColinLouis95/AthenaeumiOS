@@ -12,6 +12,7 @@ struct AthenaeumApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .modelContainer(for: UserInfo.self)
         }
     }
 }

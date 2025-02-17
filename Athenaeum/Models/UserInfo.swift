@@ -9,11 +9,12 @@ import Foundation
 import SwiftData
 
 @Model
-class UserInfo {
+class UserInfo: Identifiable {
     var username: String
     var password: String
     var site: String
     var notes: String
+    var id: UUID = UUID()
     
     init(username: String = "", password: String = "", site: String = "", notes: String = "") {
         self.username = username

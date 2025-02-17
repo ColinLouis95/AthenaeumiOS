@@ -44,13 +44,13 @@ struct NewPasswordView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
                         saveData()
-                        isPresented = false // close window
+                        dismiss()
                     }
                 }
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
                         dismiss()
-                        isPresented = false // close window
+                        
                     }
                 }
                 
@@ -60,10 +60,40 @@ struct NewPasswordView: View {
     }
 }   // end of NewPasswordView
 
+struct viewPassword: View {
+    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
+    
+    @State var path = [UserInfo]()
+    let backgroundColor = Color(#colorLiteral(red: 0.09300225228, green: 0.10428413, blue: 0.4961095452, alpha: 0.8674461921))
+    let textFieldColor = Color(#colorLiteral(red: 0.8374180198, green: 0.8374378085, blue: 0.8374271393, alpha: 1))
+    @Bindable var userInfo: UserInfo
+    
+    var body: some View {
+        NavigationStack {
+            Form {
+                Text("Username:    \(userInfo.username)")
+                Text("Password:    \(userInfo.password)")
+                Text("Site:    \(userInfo.site)")
+                Text("Notes:    \(userInfo.notes)")
+            }
+            .padding()
+            .font(.title2)
+            .navigationTitle("Passwords")
+        }
+    }
+    
+    
+}
+
+
 struct GroupView: View {
     let backgroundColor = Color(#colorLiteral(red: 0.09300225228, green: 0.10428413, blue: 0.4961095452, alpha: 0.8674461921))
     let buttonColor = Color(#colorLiteral(red: 0.02285457216, green: 0.01912862621, blue: 0.9728235602, alpha: 0.9074658526))
     let textFieldColor = Color(#colorLiteral(red: 0.8374180198, green: 0.8374378085, blue: 0.8374271393, alpha: 1))
+    
+    @Query var userInputs: [UserInfo]
     
     //@Bindable var info: UserInfo
     @State var searchText: String = ""
@@ -111,41 +141,40 @@ struct GroupView: View {
                     Spacer()
                     
                     ScrollView(.vertical, showsIndicators: false) {
-                        //MARK: add logic from showGropups method for adding buttons based on number of groups user has...
-                        
-                        //MARK: add logic for button press to change view, either a NavigationStack or include a button to go back to this view...
-                        Button(action: {
-                            print("hello world")
-                        }) {
-                            HStack {
-                                VStack {
-                                    Image(systemName: "key")
-                                        .foregroundStyle(Color.purple)
-                                        .frame(alignment: .leading)
-                                    Text("All")
-                                        .font(.headline)
-                                        .foregroundStyle(Color.white)
-                                } // End of VStack
-                                Spacer()
-                                
-                                //MARK: for this VStack, we will need to check and see how many passwords are assoicated to this group.
-                                VStack {
-                                    Text("115 >")
+                            ForEach(userInputs, id: \.id) { input in
+                                NavigationLink(destination: viewPassword(userInfo: input)) {
+                                    HStack(spacing: 5) {
+                                        ZStack {
+                                            RoundedRectangle(cornerRadius: 15.0)
+                                                .frame(width: 70, height: 70)
+                                                .padding(.horizontal, 5)
+                                                .foregroundStyle(Color.gray.opacity(0.1))
+                                            
+                                            Image(systemName: "key")
+                                                .foregroundStyle(Color.white)
+                                                .font(.system(size: 35))
+                                        }
+                                        
+                                        LazyVStack(alignment: .leading) {
+                                            Text("\(input.site)")
+                                                .font(.title2)
+                                                .foregroundStyle(Color.white)
+                                                .padding(.vertical, 5)
+                                            
+                                            Text("\(input.username)")
+                                                .font(.caption)
+                                                .foregroundStyle(Color.white)
+                                        }
+                                        
+                                    }
+                                        .frame(height: 75)
+                                        .frame(maxWidth: .infinity)
+                                        .background(backgroundColor)
+                                        .cornerRadius(10)
                                 }
-                                
-                            } // End of HStack
-                            .frame(width: 350, height: 50, alignment: .leading)
-                            .padding()
-                            .background(buttonColor)
-                            .foregroundStyle(Color.white)
-                            .cornerRadius(10)
-                            
-                        } // End of Button1
-                            
-                        
+                            }
+                    
                     } // End of Scroll
-                    .background(Color.red)
-                    .frame(width: .infinity, height: 550)
                     
                     Spacer()
                     
