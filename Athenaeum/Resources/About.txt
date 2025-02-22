@@ -1,0 +1,4 @@
+Hello and welcome to Athenaeum!!! A password manager to help store and organize all the different logins in your life. 
+
+:::WARNING::: 
+This is a work in progress app, which should not be used as the only application for saving important passwords to any applications you use. Loss of login information is solely the responsibility of the user of Athenaueum, in which any issues that arise while Athenaeum is in use is of no responsibility to Alnilam studios. User beware, download and use at your own risk!!!!

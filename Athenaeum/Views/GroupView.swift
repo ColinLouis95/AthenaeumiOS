@@ -8,14 +8,15 @@
 import SwiftUI
 import SwiftData
 
-struct SortingEditView: View {
+struct AddPassword: View {
+    let backgroundColor = Color(#colorLiteral(red: 0.09300225228, green: 0.10428413, blue: 0.4961095452, alpha: 0.8674461921))
+    let textFieldColor = Color(#colorLiteral(red: 0.8374180198, green: 0.8374378085, blue: 0.8374271393, alpha: 1))
+    let fontType = "/System/Library/Fonts/Palatino.ttc"
+    
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @Binding var isPresented: Bool
-    
-    let backgroundColor = Color(#colorLiteral(red: 0.09300225228, green: 0.10428413, blue: 0.4961095452, alpha: 0.8674461921))
-    let textFieldColor = Color(#colorLiteral(red: 0.8374180198, green: 0.8374378085, blue: 0.8374271393, alpha: 1))
     
     @State var name = ""
     @State var pass = ""
@@ -55,73 +56,25 @@ struct SortingEditView: View {
                 }
                 
             }
-            
         }
     }
-}   // end of NewPasswordView
+}   
+// end of AddPassword View
 
-struct NewPasswordView: View {
-    @Environment(\.presentationMode) var presentationMode
-    @Environment(\.modelContext) private var modelContext
-    @Environment(\.dismiss) private var dismiss
-    @Binding var isPresented: Bool
-    
+
+struct ViewPassword: View {
     let backgroundColor = Color(#colorLiteral(red: 0.09300225228, green: 0.10428413, blue: 0.4961095452, alpha: 0.8674461921))
     let textFieldColor = Color(#colorLiteral(red: 0.8374180198, green: 0.8374378085, blue: 0.8374271393, alpha: 1))
+    let fontType = "/System/Library/Fonts/Palatino.ttc"
     
-    @State var name = ""
-    @State var pass = ""
-    @State var site = ""
-    @State var info = ""
-    
-    func saveData () {
-        let newPass = UserInfo(username: name, password: pass, site: site, notes: info)
-        modelContext.insert(newPass)
-    }
-    
-    var body: some View {
-        NavigationStack {
-            Form {
-                TextField("Username", text: $name)
-                TextField("Password", text: $pass)
-                TextField("Site", text: $site)
-                TextField("Notes", text: $info)
-            }
-            .scrollContentBackground(.hidden).background(backgroundColor)
-            .navigationTitle("New Password")
-            .toolbarColorScheme(.dark, for: .navigationBar)
-            .toolbarBackground(backgroundColor, for: .navigationBar)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") {
-                        saveData()
-                        dismiss()
-                    }
-                }
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        dismiss()
-                        
-                    }
-                }
-                
-            }
-            
-        }
-    }
-}   // end of NewPasswordView
-
-struct viewPassword: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     
     @State var path = [UserInfo]()
-    let backgroundColor = Color(#colorLiteral(red: 0.09300225228, green: 0.10428413, blue: 0.4961095452, alpha: 0.8674461921))
-    let textFieldColor = Color(#colorLiteral(red: 0.8374180198, green: 0.8374378085, blue: 0.8374271393, alpha: 1))
-    @Bindable var userInfo: UserInfo
     
+    @Bindable var userInfo: UserInfo
+  
     var body: some View {
         NavigationStack {
             Form {
@@ -130,39 +83,45 @@ struct viewPassword: View {
                 Text("Site:    \(userInfo.site)")
                 Text("Notes:    \(userInfo.notes)")
             }
-            .padding()
+            .scrollContentBackground(.hidden).background(backgroundColor)
             .font(.title2)
-            .navigationTitle("Passwords")
+            .navigationTitle("\(userInfo.site)")
         }
+        
     }
-    
-    
 }
+// end of ViewPassword View
 
 
 struct GroupView: View {
+    @Environment(\.modelContext) var modelContext
     let backgroundColor = Color(#colorLiteral(red: 0.09300225228, green: 0.10428413, blue: 0.4961095452, alpha: 0.8674461921))
     let buttonColor = Color(#colorLiteral(red: 0.02285457216, green: 0.01912862621, blue: 0.9728235602, alpha: 0.9074658526))
     let textFieldColor = Color(#colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1))
+    let fontType = "/System/Library/Fonts/Palatino.ttc"
     
-    @Query var userInputs: [UserInfo]
+    @Query(sort: [SortDescriptor(\UserInfo.site, order: .reverse),
+                  SortDescriptor(\UserInfo.username)]) var userInfo: [UserInfo]
     
-    //@Bindable var info: UserInfo
+    @State var sortOrder = SortDescriptor(\UserInfo.site)
     @State var searchText: String = ""
-    @State var toggleGroup: Bool = false
     @State var isShowingNewPassView = false
     @State var isShowingSortingEditView = false
 
-// Creates a white color font for Navigation Header
-    init() {
-            UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        }
-
-    
-    func showPasswords() {
-        // MARK: function to pull user's passwords and put them on screen.
+// Creates a white color font for Navigation Header and font for search bar
+    init(sort: SortDescriptor<UserInfo>, searchString: String) {
+        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        let textFieldAppearance = UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self])
+        textFieldAppearance.backgroundColor = UIColor.lightGray
     }
     
+    func deleteInfo(_ indexSet: IndexSet) {
+        for index in indexSet {
+            let info = userInfo[index]
+            modelContext.delete(info)
+        }
+    }
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -170,33 +129,9 @@ struct GroupView: View {
                     .shadow(color: .purple, radius: 2)
                 
                 VStack {
-                    HStack {
-                        Image(systemName: "magnifyingglass")
-                            .foregroundStyle(Color.gray)
-
-                        TextField("Search", text: $searchText)
-                            .foregroundStyle(Color.white)
-                            
-                        
-                        if searchText.isEmpty {
-                            Image(systemName: "mic.fill")
-                                .foregroundStyle(Color.gray)
-                        }
-                        
-                    } // End of HStack
-                    
-                    .padding()
-                    .background(textFieldColor.cornerRadius(15).opacity(0.8))
-                    .font(.headline)
-                    .accentColor(.green)
-                    .shadow(color: .black.opacity(0.3), radius: 10, x: 10, y: 10)
-                    .blur(radius: 0.2, opaque: false)
-                    
-                    Spacer()
-                    
                     ScrollView(.vertical, showsIndicators: false) {
-                            ForEach(userInputs, id: \.id) { input in
-                                NavigationLink(destination: viewPassword(userInfo: input)) {
+                            ForEach(userInfo, id: \.id) { input in
+                                NavigationLink(destination: ViewPassword(userInfo: input)) {
                                     HStack(spacing: 5) {
                                         ZStack {
                                             RoundedRectangle(cornerRadius: 15.0)
@@ -211,12 +146,12 @@ struct GroupView: View {
                                         
                                         LazyVStack(alignment: .leading) {
                                             Text("\(input.site)")
-                                                .font(.title2)
+                                                .font(.custom("Palatino", size: 30))
                                                 .foregroundStyle(Color.white)
                                                 .padding(.vertical, 5)
                                             
                                             Text("\(input.username)")
-                                                .font(.caption)
+                                                .font(.custom("Palatino", size: 20))
                                                 .foregroundStyle(Color.white)
                                         }
                                         
@@ -227,67 +162,76 @@ struct GroupView: View {
                                         .cornerRadius(10)
                                 }
                             }
+                            .onDelete(perform: deleteInfo)
+                            
                     
-                    } // End of Scroll
+                    } 
+// End of ScrollView
                     
                     Spacer()
                     
-                    HStack {    // for making the buttons on the bottom for adding new password or for changing order of passwords
-                    
-                        Button(action: {
-                            isShowingSortingEditView = true
-                        }, label: {
-                            Image(systemName: "slider.vertical.3")
-                                .foregroundStyle(Color.white)
-                                .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/).bold()
-                        })
-                        .sheet(isPresented: $isShowingSortingEditView, content: {
-                            NewPasswordView(isPresented: $isShowingSortingEditView)
-                                
-                        })
-                        
-                        Spacer()
-                            .frame(width: 100)
-                            .background(Color.orange)
-                        
-                        Text("\(userInputs.count) Passwords")
+// for making the buttons on the bottom for adding new password or for changing order of passwords
+                    HStack(spacing: 100) {
+// This Menu is for changing sorting of passwords
+                        Menu("", systemImage: "arrow.up.arrow.down") {
+                            Picker("", selection: $sortOrder) {
+                                Text("Ascending")
+                                    .tag(SortDescriptor(\UserInfo.site, order: .forward))
+                                Text("Descending")
+                                    .tag(SortDescriptor(\UserInfo.site, order: .reverse))
+                                Text("Username")
+                                    .tag(SortDescriptor(\UserInfo.username))
+                                Text("Password")
+                                    .tag(SortDescriptor(\UserInfo.password))
+                            }
+                        }
+                        .foregroundStyle(Color.white)
+
+// To show how many passwords a user has in total
+                        Text("\(userInfo.count) Passwords")
                             .foregroundStyle(Color.white)
+                            .font(.custom("Palatino", size: 20))
 
                         
-                        Spacer()
-                            .frame(width: 100)
-                            .background(Color.orange)
-// This is the button to being up form for new password
+// This is the button to bring up a sheet so a user can add a new password
                         Button(action: {
                            isShowingNewPassView = true
                         }, label: {
                             Image(systemName: "plus")
                                 .foregroundStyle(Color.white)
-                                .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/).bold()
+                                .font(.title2)
                         })
                         .sheet(isPresented: $isShowingNewPassView, content: {
-                            NewPasswordView(isPresented: $isShowingNewPassView)
-                                
+                            AddPassword(isPresented: $isShowingNewPassView)
+
                         })
                         
-                    } // End of HStack
+                        
+                    } 
+// End of HStack
                     .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
                     .opacity(0.8)
                   
-                } // End of VStack
+                } 
+// End of VStack
                 .navigationTitle("Passwords")
                 
                 
                 
-            } // End of ZStack
-            
-        } // End of Nav Stack
+            } 
+// End of ZStack
+            .navigationBarBackButtonHidden(true)
+            .searchable(text: $searchText)
+            .tint(.white)
+        } 
+// End of Nav Stack
         
-    } // End of Body
-
+    } 
+// End of Body
     
 }
+// end of Struct
 
 #Preview {
-    GroupView()
+    GroupView(sort: SortDescriptor(\UserInfo.site), searchString: "")
 }
