@@ -63,7 +63,7 @@ struct NewUserView: View {
                             .padding()
                             .background(textFieldColor.cornerRadius(25))
                             .foregroundColor(.white)
-                            .font(.headline)
+                            .font(.custom("Palatino", size: 20))
                             .accentColor(.purple)
                             .shadow(color: .purple, radius: 2)
                         
@@ -71,7 +71,7 @@ struct NewUserView: View {
                             .padding()
                             .background(textFieldColor.cornerRadius(25))
                             .foregroundColor(.white)
-                            .font(.headline)
+                            .font(.custom("Palatino", size: 20))
                             .accentColor(.purple)
                             .shadow(color: .purple, radius: 2)
                         
@@ -79,7 +79,7 @@ struct NewUserView: View {
                             .padding()
                             .background(textFieldColor.cornerRadius(25))
                             .foregroundColor(.white)
-                            .font(.headline)
+                            .font(.custom("Palatino", size: 20))
                             .accentColor(.purple)
                             .shadow(color: .purple, radius: 2)
                         
@@ -87,7 +87,7 @@ struct NewUserView: View {
                             .padding()
                             .background(textFieldColor.cornerRadius(25))
                             .foregroundColor(.white)
-                            .font(.headline)
+                            .font(.custom("Palatino", size: 20))
                             .accentColor(.purple)
                             .shadow(color: .purple, radius: 2)
                         
@@ -99,7 +99,7 @@ struct NewUserView: View {
                     }, label: {
                         Text("Create User")
                     })
-                    .font(.headline)
+                        .font(.custom("Palatino", size: 20))
                     .foregroundStyle(Color.white)
                     .padding()
                     .frame(width: 200)
