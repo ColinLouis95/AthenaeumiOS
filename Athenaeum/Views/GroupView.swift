@@ -74,6 +74,10 @@ struct ViewPassword: View {
     @State var path = [UserInfo]()
     
     @Bindable var userInfo: UserInfo
+    
+    func deleteInfo() {
+            modelContext.delete(userInfo)
+    }
   
     var body: some View {
         NavigationStack {
@@ -86,6 +90,14 @@ struct ViewPassword: View {
             .scrollContentBackground(.hidden).background(backgroundColor)
             .font(.title2)
             .navigationTitle("\(userInfo.site)")
+            .toolbar {
+                ToolbarItem(placement: .destructiveAction) {
+                    Button("Delete") {
+                        deleteInfo()
+                        dismiss()
+                    }
+                }
+            }
         }
         
     }
@@ -121,7 +133,14 @@ struct GroupView: View {
             modelContext.delete(info)
         }
     }
-
+// this is for the search bar, when a user searches for a site, it will show the site.
+    var filteredResult: [UserInfo] {
+        if searchText.isEmpty {
+            return userInfo
+        } else {
+            return userInfo.filter { $0.site.localizedCaseInsensitiveContains(searchText)}
+        }
+    }
     var body: some View {
         NavigationStack {
             ZStack {
@@ -130,7 +149,7 @@ struct GroupView: View {
                 
                 VStack {
                     ScrollView(.vertical, showsIndicators: false) {
-                            ForEach(userInfo, id: \.id) { input in
+                            ForEach(filteredResult, id: \.id) { input in
                                 NavigationLink(destination: ViewPassword(userInfo: input)) {
                                     HStack(spacing: 5) {
                                         ZStack {
@@ -153,6 +172,7 @@ struct GroupView: View {
                                             Text("\(input.username)")
                                                 .font(.custom("Palatino", size: 20))
                                                 .foregroundStyle(Color.white)
+                                                
                                         }
                                         
                                     }
@@ -161,6 +181,7 @@ struct GroupView: View {
                                         .background(backgroundColor)
                                         .cornerRadius(10)
                                 }
+                                
                             }
                             .onDelete(perform: deleteInfo)
                             
@@ -215,15 +236,14 @@ struct GroupView: View {
                 } 
 // End of VStack
                 .navigationTitle("Passwords")
-                
-                
-                
+
             } 
 // End of ZStack
             .navigationBarBackButtonHidden(true)
             .searchable(text: $searchText)
             .tint(.white)
         } 
+        
 // End of Nav Stack
         
     } 
