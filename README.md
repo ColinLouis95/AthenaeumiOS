@@ -32,6 +32,57 @@ git clone https://github.com/ColinLouis95/AthenaeumiOS.git
 3. Once the simulator is running the app, all functionality will be live through the simulator. Currently testing has been done on an iPhone 15.
 4. To safely close out the simulator, it is recommended to press the Home button on the simulator before existing to prevent crashing.
 
+## Project Structure
+```
+├── Athenaeum
+│   ├── Assets.xcassets
+│   │   ├── AccentColor.colorset
+│   │   │   └── Contents.json
+│   │   ├── AppIcon.appiconset
+│   │   │   └── Contents.json
+│   │   ├── welcome.imageset
+│   │   │   ├── Contents.json
+│   │   │   └── welcome.png
+│   │   └── Contents.json
+│   ├── Models
+│   │   ├── User.swift
+│   │   └── UserInfo.swift
+│   ├── Preview Content
+│   │   └── Preview Assets.xcassets
+│   │       └── Contents.json
+│   ├── Resources
+│   │   ├── About Athenaeum.png
+│   │   ├── About.txt
+│   │   ├── Adding Password.png
+│   │   ├── New User View.png
+│   │   ├── Password Home.png
+│   │   ├── Passwords View.png
+│   │   └── Sorting Password.png
+│   ├── Views
+│   │   ├── AboutView.swift
+│   │   ├── GroupView.swift
+│   │   ├── LoginView.swift
+│   │   └── NewUserView.swift
+│   ├── AthenaeumApp.swift
+│   └── ContentView.swift
+└── Athenaeum.xcodeproj
+    ├── project.xcworkspace
+    │   ├── xcshareddata
+    │   │   ├── swiftpm
+    │   │   │   └── configuration
+    │   │   └── IDEWorkspaceChecks.plist
+    │   ├── xcuserdata
+    │   │   └── colinkugler.xcuserdatad
+    │   │       └── UserInterfaceState.xcuserstate
+    │   └── contents.xcworkspacedata
+    ├── xcuserdata
+    │   └── colinkugler.xcuserdatad
+    │       ├── xcdebugger
+    │       │   └── Breakpoints_v2.xcbkptlist
+    │       └── xcschemes
+    │           └── xcschememanagement.plist
+    └── project.pbxproj
+```
 ## Screenshots
 ![Screenshot of the Home Menu Screen in Athenaeum.]
 ![Screenshot of the About Screen in Athenaeum.]
