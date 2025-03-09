@@ -8,12 +8,12 @@ A simple iOS app for managing passwords.
 ## Disclaimer
 
 ## Table of Contents
-- [Setup](#Setup)
-- [Usage](#Usage)
-- [Features](Features)
-- [Contributing](#Contributing)
-- [License](#License)
-- [Contact](#Contact)
+- [Setup](#setup)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [Contributing](#contributing)
+- [Contact](#contact)
+- [Screenshots of Athenaeum](#screenshots-of-athenaeum)
 
 ## Setup
 Clone the repository:
@@ -83,14 +83,6 @@ git clone https://github.com/ColinLouis95/AthenaeumiOS.git
     │           └── xcschememanagement.plist
     └── project.pbxproj
 ```
-## Screenshots
-![Screenshot of the Home Menu Screen in Athenaeum.]
-![Screenshot of the About Screen in Athenaeum.]
-![Screenshot of the New User Screen in Athenaeum.]
-![Screenshot of the Main Login Screen.]
-![Screenshot of the Main Screen.]
-![Screenshot of adding a new Password.]
-![Sreenshot of sorting passwords.]
 
 ## Contributing
 Contributions are welcome! Please:
@@ -104,4 +96,20 @@ Contributions are welcome! Please:
 > Please keep your pull requests small and dedicated to one task or issue. This will help me review and merge your contributions!
 
 If your contribution is a new feature, please open an issue and tag it as _enhancement_.
+
+## Contact
+You can contact me here or through email at kuglercolin4@gmail.com
+
+## Screenshots of Athenaeum
+- Home Menu Screen
+![Screenshot of the Home Menu Screen in Athenaeum.](/Athenaeum/Resources/Home.png)
+
+- New User Screen
+![Screenshot of the New User Screen in Athenaeum.](/Athenaeum/Resources/NewUser.png)
+
+- New Password Screen
+![Screenshot of adding a new Password.](/Athenaeum/Resources/AddingPassword.png)
+
+- Sorting Screen
+![Sreenshot of sorting passwords.](/Athenaeum/Resources/Sorting.png)
 
